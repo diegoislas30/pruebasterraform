@@ -106,3 +106,17 @@ resource "azurerm_subnet" "subnet2" {
 }
 
 
+resource "azurerm_network_interface" "nic4" {
+  name                = "nic4"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.rg.name
+
+  ip_configuration {
+    name                          = "internal"
+    subnet_id                    = azurerm_subnet.subnet2.id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+
+
+
