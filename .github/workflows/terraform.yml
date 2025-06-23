@@ -1,4 +1,4 @@
-name: 'Terraform Azure Deploy'
+name: Terraform Azure Deploy
 
 on:
   push:
@@ -13,16 +13,23 @@ env:
 
 jobs:
   terraform:
+    name: 'Terraform Deploy'
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repo
+    - name: Checkout repository
       uses: actions/checkout@v3
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v3
       with:
         terraform_version: 1.6.6
+
+    - name: Display Terraform version
+      run: terraform version
+
+    - name: List current directory
+      run: ls -la && cat terraform.tfvars || echo "No terraform.tfvars found"
 
     - name: Terraform Init
       run: terraform init
