@@ -56,14 +56,27 @@ resource "azurerm_windows_virtual_machine" "vm" {
 }
 
 
-resource "azurerm_windows_virtual_machine" "vm01" {
-  name                = "vm01"
+resource azurerm_virtual_interface "nic-02" {
+  name                = "vnet-interface"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.rg.name
+
+  ip_configuration {
+    name                          = "vnet-ipconfig"
+    subnet_id                    = azurerm_subnet.subnet.id
+    private_ip_address_allocation = "Dynamic"
+  }
+}
+
+
+resource "azurerm_windows_virtual_machine" "vm-02" {
+  name                = "vm-02"
   resource_group_name = azurerm_resource_group.rg.name
   location            = var.location
   size                = "Standard_B1s"
   admin_username      = var.admin_username
   admin_password      = var.admin_password
-  network_interface_ids = [azurerm_network_interface.nic.id]
+  network_interface_ids = [azurerm_virtual_interface.nic-02.id]
 
   os_disk {
     caching              = "ReadWrite"
@@ -76,7 +89,9 @@ resource "azurerm_windows_virtual_machine" "vm01" {
     sku       = "2022-Datacenter"
     version   = "latest"
   }
+
   
 }
+
 
 
