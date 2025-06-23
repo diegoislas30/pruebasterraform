@@ -37,11 +37,11 @@ jobs:
     needs: terraform
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Esperar aprobación
-        uses: hmarr/auto-approve-action@v3
-        if: false # Este paso es decorativo; lo importante es el control manual
+    environment:
+      name: production
+      url: https://portal.azure.com
 
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -53,5 +53,5 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      - name: Terraform Apply (espera aprobación manual)
+      - name: Terraform Apply (requiere aprobación manual)
         run: terraform apply -auto-approve -var-file="terraform.tfvars"
