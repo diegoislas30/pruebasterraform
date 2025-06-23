@@ -56,8 +56,8 @@ resource "azurerm_windows_virtual_machine" "vm" {
 }
 
 
-resource "azurerm_linux_virtual_machine" "linux_vm" {
-  name                = "vm-linux"
+resource "azurerm_windows_virtual_machine" "vm01" {
+  name                = "vm01"
   resource_group_name = azurerm_resource_group.rg.name
   location            = var.location
   size                = "Standard_B1s"
@@ -71,9 +71,12 @@ resource "azurerm_linux_virtual_machine" "linux_vm" {
   }
 
   source_image_reference {
-    publisher = "Canonical"
-    offer     = "0001-com-ubuntu-server-jammy"
-    sku       = "22_04-lts-gen2"
+    publisher = "MicrosoftWindowsServer"
+    offer     = "WindowsServer"
+    sku       = "2022-Datacenter"
     version   = "latest"
   }
+  
 }
+
+
