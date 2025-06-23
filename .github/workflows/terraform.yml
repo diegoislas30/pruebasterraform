@@ -1,7 +1,9 @@
 name: Terraform Azure Deploy
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 env:
   ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
@@ -11,7 +13,7 @@ env:
 
 jobs:
   terraform:
-    name: Terraform Deploy
+    name: Terraform Plan
     runs-on: ubuntu-latest
 
     steps:
@@ -32,7 +34,7 @@ jobs:
       - name: Terraform Plan
         run: terraform plan -var-file="terraform.tfvars"
 
-  approve-and-apply:
+  apply:
     name: Manual Approval & Apply
     needs: terraform
     runs-on: ubuntu-latest
@@ -53,5 +55,5 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      - name: Terraform Apply (requiere aprobación manual)
+      - name: Terraform Apply (requiere aprobación)
         run: terraform apply -auto-approve -var-file="terraform.tfvars"
