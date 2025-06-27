@@ -1,59 +1,59 @@
-name: Terraform Azure Deploy
+name: Terraform Azure Deploy ## Este es el nombre del workflow que se mostrará en GitHub Actions
 
-on:
-  push:
-    branches:
-      - main
+on: ## En este comentario es donde se define cuándo se ejecutará el workflow
+  push: ## Este workflow se ejecutará cuando se haga un push a la rama main
+    branches: ## Aquí se especifica la rama
+      - main 
 
-env:
+env: ## Aquí se definen las variables de entorno y se obtendrán de los secretos de GitHub
   ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
   ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
   ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
   ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
-jobs:
-  terraform:
-    name: Terraform Plan
-    runs-on: ubuntu-latest
+jobs:  ## Aquí se definen los trabajos que se ejecutarán en el workflow
+  terraform: ## Este es el primer trabajo que se ejecutará en el workflow
+    name: Terraform Plan ## Este es el nombre del trabajo que se mostrará en GitHub Actions
+    runs-on: ubuntu-latest ## Este trabajo se ejecutará en un runner de Ubuntu
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    steps: ## Aquí se definen los pasos que se ejecutarán en el trabajo
+      - name: Checkout repository ## Este paso hace checkout del repositorio para que el runner tenga acceso al código
+        uses: actions/checkout@v3 ## Este es el action que se utiliza para hacer checkout del repositorio
+ 
+      - name: Setup Terraform ## Este paso configura Terraform en el runner
+        uses: hashicorp/setup-terraform@v3 ## Este es el action que se utiliza para configurar Terraform
+        with: ## Aquí se especifica la versión de Terraform que se utilizará
+          terraform_version: 1.6.6 ## Esta es la versión de Terraform que se utilizará
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.6.6
+      - name: Terraform Init ## Este paso inicializa Terraform
+        run: terraform init ## Este comando inicializa el directorio de trabajo de Terraform
 
-      - name: Terraform Init
-        run: terraform init
+      - name: Terraform Validate ## Este paso valida la configuración de Terraform
+        run: terraform validate ## Este comando valida la configuración de Terraform
 
-      - name: Terraform Validate
-        run: terraform validate
+      - name: Terraform Plan ## Este paso crea un plan de ejecución de Terraform
+        run: terraform plan -var-file="terraform.tfvars" ## Este comando crea un plan de ejecución de Terraform utilizando el archivo de variables terraform.tfvars
 
-      - name: Terraform Plan
-        run: terraform plan -var-file="terraform.tfvars"
+  apply: ## Este es el segundo trabajo que se ejecutará en el workflo
+    name: Manual Approval & Apply ## Este es el nombre del segundo trabajo que se mostrará en GitHub Actions
+    needs: terraform ## Este trabajo depende del trabajo terraform, por lo que se ejecutará después de que se complete el trabajo terraform
+    runs-on: ubuntu-latest ## Este trabajo se ejecutará en un runner de Ubuntu
 
-  apply:
-    name: Manual Approval & Apply
-    needs: terraform
-    runs-on: ubuntu-latest
+    environment: ## Aquí se define el entorno en el que se ejecutará el trabajo
+      name: production ## Este es el nombre del entorno que se mostrará en GitHub Actions
+      url: https://portal.azure.com ## Esta es la URL del entorno de producción en Azure
 
-    environment:
-      name: production
-      url: https://portal.azure.com
+    steps: ## Aquí se definen los pasos que se ejecutarán en el segundo trabajo
+      - name: Checkout repository ## Este paso hace checkout del repositorio para que el runner tenga acceso al código
+        uses: actions/checkout@v3 ## Este es el action que se utiliza para hacer checkout del repositorio
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Setup Terraform ## Este paso configura Terraform en el runner
+        uses: hashicorp/setup-terraform@v3 ## Este es el action que se utiliza para configurar Terraform
+        with: ## Aquí se especifica la versión de Terraform que se utilizará
+          terraform_version: 1.6.6 ## Esta es la versión de Terraform que se utilizará
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.6.6
+      - name: Terraform Init ## Este paso inicializa Terraform
+        run: terraform init  ## Este comando inicializa el directorio de trabajo de Terraform
 
-      - name: Terraform Init
-        run: terraform init
-
-      - name: Terraform Apply (requiere aprobación)
-        run: terraform apply -auto-approve -var-file="terraform.tfvars"
+      - name: Terraform Apply (requiere aprobación) ## Este paso aplica el plan de Terraform, pero requiere aprobación manual
+        run: terraform apply -auto-approve -var-file="terraform.tfvars" ## Este comando aplica el plan de Terraform utilizando el archivo de variables terraform.tfvars y la opción -auto-approve para omitir la confirmación manual
