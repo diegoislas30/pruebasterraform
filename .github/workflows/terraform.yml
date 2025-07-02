@@ -32,7 +32,7 @@ jobs:  ## Aquí se definen los trabajos que se ejecutarán en el workflow
         run: terraform validate ## Este comando valida la configuración de Terraform
 
       - name: Terraform Plan ## Este paso crea un plan de ejecución de Terraform
-        run: terraform plan -var-file="terraform.tfvars" ## Este comando crea un plan de ejecución de Terraform utilizando el archivo de variables terraform.tfvars
+        run: terraform plan ## Este comando crea un plan de ejecución de Terraform utilizando el archivo de variables terraform.tfvars
 
   apply: ## Este es el segundo trabajo que se ejecutará en el workflo
     name: Manual Approval & Apply ## Este es el nombre del segundo trabajo que se mostrará en GitHub Actions
