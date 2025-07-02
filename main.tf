@@ -96,3 +96,7 @@ resource "azurerm_windows_virtual_machine" "vm01" {
 output "public_ip_address" {
   value = azurerm_public_ip.public_ip01.ip_address
 }
+
+output "admin_username" {
+  value = azurerm_windows_virtual_machine.vm01.admin_username
+}
