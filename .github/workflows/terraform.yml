@@ -56,4 +56,4 @@ jobs:  ## Aquí se definen los trabajos que se ejecutarán en el workflow
         run: terraform init  ## Este comando inicializa el directorio de trabajo de Terraform
 
       - name: Terraform Apply (requiere aprobación) ## Este paso aplica el plan de Terraform, pero requiere aprobación manual
-        run: terraform apply -auto-approve -var-file="terraform.tfvars" ## Este comando aplica el plan de Terraform utilizando el archivo de variables terraform.tfvars y la opción -auto-approve para omitir la confirmación manual
+        run: terraform apply ## Este comando aplica el plan de Terraform utilizando el archivo de variables terraform.tfvars y la opción -auto-approve para omitir la confirmación manual
