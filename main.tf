@@ -14,7 +14,7 @@ provider "azurerm" {
 
 resource "azurerm_resource_group" "rg01" {
   name     = "terraformpruebas01"
-  location = "mexicocentral"
+  location = "eastus"
 }
 
 resource "azurerm_virtual_network" "vnet01" {
