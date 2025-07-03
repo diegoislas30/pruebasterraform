@@ -82,17 +82,7 @@ resource "azurerm_network_security_group" "nsg01" {
     destination_address_prefix = "*"
   }
 
-  security_rule {
-    name                      = "AllowICMP"
-    priority                   = 1004
-    direction                  = "Inbound"
-    access                     = "Allow"
-    protocol                   = "Icmp"
-    source_port_range          = "*"
-    destination_port_ranges    = ["*"]
-    source_address_prefix      = "*"
-    destination_address_prefix = "*"
-  }
+
 
 }
 
