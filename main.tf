@@ -72,13 +72,13 @@ resource "azurerm_network_interface" "nic01" {
   }
 }
 
-## Crea una maquina virtual en azure con windows server 2022 de 2 cpu y 4 gb de ram de la familia b4_ms
+## Crea una maquina virtual en azure con windows server 2019 data center x64 gen 2
 
-resource "azurerm_windows_virtual_machine" "vm01" {
+resource "azurerm_linux_virtual_machine" "vm01" {
   name                = "vm01"
   resource_group_name = azurerm_resource_group.rg01.name
   location            = azurerm_resource_group.rg01.location
-  size                = "Standard_B4_ms"
+  size                = "Standard_B2_ms"
   admin_username      = "adminuser"
   admin_password      = "P@ssw0rd1234!"
   network_interface_ids = [
@@ -91,10 +91,9 @@ resource "azurerm_windows_virtual_machine" "vm01" {
   }
 
   source_image_reference {
-    publisher = "MicrosoftWindowsServer"
-    offer     = "WindowsServer"
-    sku       = "2022-Datacenter"
+    publisher = "Canonical"
+    offer     = "0001-com-ubuntu-server-jammy"
+    sku       = "22_04-lts-gen2"
     version   = "latest"
   }
 }
-
