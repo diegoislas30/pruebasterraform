@@ -72,18 +72,18 @@ resource "azurerm_network_interface" "nic01" {
   }
 }
 
-## Crea una maquina virtual en azure con windows server 2019 data center x64 gen 2
+## Crea una maquina virtual en azure con linux con usuario y contraseña 
 
 resource "azurerm_linux_virtual_machine" "vm01" {
   name                = "vm01"
   resource_group_name = azurerm_resource_group.rg01.name
   location            = azurerm_resource_group.rg01.location
-  size                = "Standard_B2_ms"
+  size                = "Standard_DS1_v2"
+  disable_password_authentication = false
   admin_username      = "adminuser"
-  admin_password      = "P@ssw0rd1234!"
-  network_interface_ids = [
-    azurerm_network_interface.nic01.id,
-  ]
+  admin_password      = "P@ssw0rd1234!" # Cambia esto por una contraseña segura
+
+  network_interface_ids = [azurerm_network_interface.nic01.id]
 
   os_disk {
     caching              = "ReadWrite"
