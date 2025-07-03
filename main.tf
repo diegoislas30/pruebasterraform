@@ -72,11 +72,13 @@ resource "azurerm_network_interface" "nic01" {
   }
 }
 
+## Crea una maquina virtual en azure con windows server 2022 de 2 cpu y 4 gb de ram de la familia b4_ms
+
 resource "azurerm_windows_virtual_machine" "vm01" {
   name                = "vm01"
   resource_group_name = azurerm_resource_group.rg01.name
   location            = azurerm_resource_group.rg01.location
-  size                = "Standard_B2_ms"
+  size                = "Standard_B4_ms"
   admin_username      = "adminuser"
   admin_password      = "P@ssw0rd1234!"
   network_interface_ids = [
@@ -91,15 +93,8 @@ resource "azurerm_windows_virtual_machine" "vm01" {
   source_image_reference {
     publisher = "MicrosoftWindowsServer"
     offer     = "WindowsServer"
-    sku       = "2019-Datacenter"
+    sku       = "2022-Datacenter"
     version   = "latest"
   }
 }
 
-output "public_ip_address" {
-  value = azurerm_public_ip.public_ip01.ip_address
-}
-
-output "admin_username" {
-  value = azurerm_windows_virtual_machine.vm01.admin_username
-}
