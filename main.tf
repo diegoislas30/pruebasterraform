@@ -137,13 +137,14 @@ resource "azurerm_linux_virtual_machine" "vm01" {
     version   = "latest"
   }
 
-  ## actualiza el sistema operativo de la maquina virtual e instala nginx
-  custom_data = <<-EOT
-  #!/bin/bash
-  sudo apt-get update
-  sudo apt-get upgrade -y
-  sudo apt-get install nginx -y
-  systemctl start nginx
-  systemctl enable nginx
+    custom_data = base64encode(<<-EOT
+    #!/bin/bash
+    sudo apt-get update
+    sudo apt-get upgrade -y
+    sudo apt-get install nginx -y
+    systemctl start nginx
+    systemctl enable nginx
   EOT
+  )
+
 }
