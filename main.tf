@@ -148,3 +148,5 @@ resource "azurerm_linux_virtual_machine" "vm01" {
   )
 
 }
+
+## se agrega vm 
